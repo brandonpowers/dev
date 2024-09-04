@@ -46,6 +46,9 @@ git config --global user.email "$userEmail"
 Write-Host "Git username set to: $userName"
 Write-Host "Git email set to: $userEmail"
 
+# Set the default git branch to main
+git config --global init.defaultBranch main
+
 # Set vscode as default git editor
 git config --global core.editor 'code --wait'
 
