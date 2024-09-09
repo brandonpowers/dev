@@ -1,4 +1,12 @@
-Set-ExecutionPolicy AllSigned
+# Check if the script is running as an administrator
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "This script must be run as an Administrator." -ForegroundColor Magenta
+    Exit 1
+}
+
+Write-Host "Installing dev tools with elevated privileges." -ForegroundColor Cyan
+
+Set-ExecutionPolicy RemoteSigned
 
 # Install chocolatey
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
@@ -12,12 +20,17 @@ choco install -y zoom
 choco install -y zoom-outlook
 
 # Dev Tools
+choco install -y powershell-core
 choco install -y git
 choco install -y github-cli
-choco install -y nodejs
-choco install -y python
 choco install -y awscli
 choco install -y azure-cli
+choco install -y poshgit
+choco install -y oh-my-posh
+choco install -y powertoys
+choco install -y python
+choco install -y nvm
+nvm install node
 
 # Virtualization / Containerization
 choco install -y docker-desktop
@@ -60,4 +73,4 @@ git config --global difftool.vscode.cmd 'code --wait --diff $LOCAL $REMOTE'
 git config --global merge.tool vscode
 git config --global mergetool.vscode.cmd 'code --wait $MERGED'
 
-"Complete!"
+Write-Host "Complete!" -ForegroundColor Cyan
